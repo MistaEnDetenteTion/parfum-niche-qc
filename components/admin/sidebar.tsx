@@ -23,6 +23,11 @@ const navItems = [
     exact: true,
   },
   {
+    href: "/admin/crm",
+    icon: Users,
+    label: "CRM Clients",
+  },
+  {
     href: "/admin/parfums",
     icon: FlaskConical,
     label: "Catalogue parfums",
