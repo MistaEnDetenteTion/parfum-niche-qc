@@ -116,7 +116,7 @@ export function ClientModal({
               </div>
               <div className="space-y-1.5">
                 <Label>Source</Label>
-                <Select value={source} onValueChange={setSource}>
+                <Select value={source} onValueChange={(v) => setSource(v as string)}>
                   <SelectTrigger className="bg-muted/30"><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Instagram">Instagram</SelectItem>
@@ -130,7 +130,7 @@ export function ClientModal({
 
             <div className="space-y-1.5">
               <Label>Parrain (Wingman)</Label>
-              <Select value={parrainId} onValueChange={setParrainId}>
+              <Select value={parrainId} onValueChange={(v) => setParrainId(v as string)}>
                 <SelectTrigger className="bg-muted/30"><SelectValue placeholder="Aucun" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">Aucun parrain</SelectItem>
@@ -169,7 +169,7 @@ export function ClientModal({
 
             <div className="space-y-1.5">
               <Label>Parfum acheté</Label>
-              <Select value={parfumId} onValueChange={setParfumId}>
+              <Select value={parfumId} onValueChange={(v) => setParfumId(v as string)}>
                 <SelectTrigger className="bg-muted/30"><SelectValue placeholder="Sélectionner le parfum" /></SelectTrigger>
                 <SelectContent>
                   {parfums.map((p) => (

@@ -31,7 +31,7 @@ export type VenteCRM = {
 // 1. Fetch tous les clients (Vue calculée)
 export async function getClients(): Promise<ClientCRM[]> {
   const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("vue_crm_clients")
     .select("*")
     .order("created_at", { ascending: false });
@@ -43,7 +43,7 @@ export async function getClients(): Promise<ClientCRM[]> {
 // 2. Fetch les ventes d'un client
 export async function getVentesClient(clientId: string): Promise<VenteCRM[]> {
   const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("ventes")
     .select("*")
     .eq("client_id", clientId)
@@ -68,7 +68,7 @@ export async function upsertClient(client: Partial<ClientCRM>) {
     parrain_id: client.parrain_id || null,
   };
 
-  const { error } = await supabase
+  const { error } = await (supabase as any)
     .from("clients")
     .upsert(payload)
     .select()
@@ -81,7 +81,7 @@ export async function upsertClient(client: Partial<ClientCRM>) {
 // 4. Ajouter une vente
 export async function addVente(vente: Partial<VenteCRM>) {
   const supabase = await createServerSupabaseClient();
-  const { error } = await supabase.from("ventes").insert([vente]);
+  const { error } = await (supabase as any).from("ventes").insert([vente]);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/crm");
 }
@@ -96,7 +96,7 @@ export async function getClientsARelancer() {
   const date25 = new Date(now.setDate(now.getDate() + 5)).toISOString(); // +5 from -30 = -25
 
   // Fetch ventes de type decant_10ml dans cette fenêtre
-  const { data, error } = await supabase
+  const { data, error } = await (supabase as any)
     .from("ventes")
     .select("*, client:clients(prenom, nom, handle_social), parfum:parfums(nom, maison)")
     .eq("type_achat", "decant_10ml")
