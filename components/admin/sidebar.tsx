@@ -12,6 +12,7 @@ import {
   Sparkles,
   Home,
   ChevronRight,
+  TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -104,18 +105,18 @@ export function AdminSidebar() {
       {/* Footer links */}
       <div className="p-3 border-t border-border/50 space-y-1">
         <Link
-          href="/story"
+          href="/admin/comparateur"
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all"
         >
-          <Sparkles className="w-4 h-4" />
-          <span>Parfum du Jour</span>
+          <TrendingUp className="w-4 h-4" />
+          <span>Comparateur Fournisseurs</span>
         </Link>
         <Link
           href="/"
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all"
         >
           <Home className="w-4 h-4" />
-          <span>Accueil</span>
+          <span>Accueil Public</span>
         </Link>
       </div>
     </aside>

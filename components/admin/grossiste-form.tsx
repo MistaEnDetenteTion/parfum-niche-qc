@@ -22,7 +22,8 @@ import {
 } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Globe, Building2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Globe, Building2, List } from "lucide-react";
+import { GrossisteCatalogueModal } from "./grossiste-catalogue-modal";
 
 type Devise = "USD" | "EUR" | "GBP" | "CAD";
 
@@ -182,6 +183,7 @@ export function GrossistesManager() {
   const { grossistes, loading, addGrossiste, updateGrossiste, deleteGrossiste } = useGrossistes();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Grossiste | null>(null);
+  const [catalogueGrossiste, setCatalogueGrossiste] = useState<Grossiste | null>(null);
 
   const handleSave = async (data: GrossisteFormData) => {
     if (editing) {
@@ -318,11 +320,22 @@ export function GrossistesManager() {
                 {g.notes && (
                   <p className="mt-2 text-xs text-muted-foreground leading-relaxed line-clamp-2">{g.notes}</p>
                 )}
+                <div className="mt-4 border-t border-border/30 pt-3">
+                  <Button size="sm" variant="outline" className="w-full text-xs gap-2" onClick={() => setCatalogueGrossiste(g)}>
+                    <List className="w-3.5 h-3.5" /> Gérer le catalogue
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
         </div>
       )}
+
+      <GrossisteCatalogueModal 
+        open={!!catalogueGrossiste} 
+        onOpenChange={(v) => !v && setCatalogueGrossiste(null)}
+        grossiste={catalogueGrossiste}
+      />
     </div>
   );
 }
