@@ -57,8 +57,7 @@ export async function getVentesClient(clientId: string): Promise<VenteCRM[]> {
 export async function upsertClient(client: Partial<ClientCRM>) {
   const supabase = await createServerSupabaseClient();
   // Ne garder que les colonnes de la table `clients`
-  const payload = {
-    id: client.id,
+  const payload: any = {
     prenom: client.prenom,
     nom: client.nom,
     handle_social: client.handle_social,
@@ -67,6 +66,9 @@ export async function upsertClient(client: Partial<ClientCRM>) {
     notes_privees: client.notes_privees,
     parrain_id: client.parrain_id || null,
   };
+  if (client.id) {
+    payload.id = client.id;
+  }
 
   const { error } = await (supabase as any)
     .from("clients")

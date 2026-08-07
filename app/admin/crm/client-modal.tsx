@@ -43,31 +43,43 @@ export function ClientModal({
   const handleSaveClient = async () => {
     if (!prenom || !nom) return;
     setSubmitting(true);
-    await upsertClient({
-      id: client?.id,
-      prenom,
-      nom,
-      handle_social: handle,
-      source_acquisition: source,
-      notes_privees: notes,
-      parrain_id: parrainId || null,
-    });
-    setSubmitting(false);
-    onOpenChange(false);
+    try {
+      await upsertClient({
+        id: client?.id,
+        prenom,
+        nom,
+        handle_social: handle,
+        source_acquisition: source,
+        notes_privees: notes,
+        parrain_id: parrainId === "none" ? null : (parrainId || null),
+      });
+      setSubmitting(false);
+      onOpenChange(false);
+    } catch (e: any) {
+      console.error(e);
+      alert("Erreur lors de la sauvegarde: " + e.message);
+      setSubmitting(false);
+    }
   };
 
   const handleSaveAchat = async () => {
     if (!client || !montant) return;
     setSubmitting(true);
-    await addVente({
-      client_id: client.id,
-      parfum_id: parfumId || null,
-      type_achat: typeAchat,
-      montant_cad: parseFloat(montant),
-      date_achat: new Date().toISOString(),
-    });
-    setSubmitting(false);
-    onOpenChange(false);
+    try {
+      await addVente({
+        client_id: client.id,
+        parfum_id: parfumId || null,
+        type_achat: typeAchat,
+        montant_cad: parseFloat(montant),
+        date_achat: new Date().toISOString(),
+      });
+      setSubmitting(false);
+      onOpenChange(false);
+    } catch (e: any) {
+      console.error(e);
+      alert("Erreur lors de l'enregistrement: " + e.message);
+      setSubmitting(false);
+    }
   };
 
   return (
