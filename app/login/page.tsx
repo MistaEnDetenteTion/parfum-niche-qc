@@ -77,7 +77,7 @@ export default function LoginPage() {
 
             {error && (
               <div className="p-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg">
-                Identifiants incorrects.
+                {error === "Invalid login credentials" ? "Identifiants incorrects." : error}
               </div>
             )}
 
