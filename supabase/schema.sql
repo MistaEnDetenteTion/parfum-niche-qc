@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS public.lots_commande (
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-COMMENT ON TABLE public.lots_commande IS 'Lots de commande groupés auprès d'un grossiste';
+COMMENT ON TABLE public.lots_commande IS 'Lots de commande groupés auprès d''un grossiste';
 CREATE INDEX IF NOT EXISTS idx_lots_grossiste ON public.lots_commande(grossiste_id);
 CREATE INDEX IF NOT EXISTS idx_lots_statut ON public.lots_commande(statut);
 
@@ -111,8 +111,8 @@ CREATE TABLE IF NOT EXISTS public.lot_parfums (
 );
 
 COMMENT ON TABLE public.lot_parfums IS 'Lignes de commande : chaque parfum dans un lot';
-COMMENT ON COLUMN public.lot_parfums.prix_achat_devise IS 'Prix d'achat du flacon dans la devise du grossiste';
-COMMENT ON COLUMN public.lot_parfums.prix_achat_cad_ml IS 'Prix d'achat converti en CAD par ml (calculé auto)';
+COMMENT ON COLUMN public.lot_parfums.prix_achat_devise IS 'Prix d''achat du flacon dans la devise du grossiste';
+COMMENT ON COLUMN public.lot_parfums.prix_achat_cad_ml IS 'Prix d''achat converti en CAD par ml (calculé auto)';
 COMMENT ON COLUMN public.lot_parfums.cout_revient_cad_ml IS 'Coût de revient total par ml (achat + livraison)';
 
 CREATE INDEX IF NOT EXISTS idx_lot_parfums_lot ON public.lot_parfums(lot_id);
@@ -443,7 +443,7 @@ VALUES
   ARRAY['Bois de Oud','Bois de rose','Cardamome'],
   ARRAY['Santal','Vétiver','Esparto'],
   ARRAY['Ambre','Tonka','Musc'],
-  'Une composition boisée et fumée autour du bois d'oud, signature olfactive de Tom Ford Private Blend.'
+  'Une composition boisée et fumée autour du bois d''oud, signature olfactive de Tom Ford Private Blend.'
 ),
 (
   'Baccarat Rouge 540',
@@ -454,7 +454,7 @@ VALUES
   ARRAY['Safran','Jasmin'],
   ARRAY['Ambroxane','Cèdre'],
   ARRAY['Musc','Fève Tonka'],
-  'Un floral ambré d'exception, devenu une référence mondiale de la parfumerie contemporaine.'
+  'Un floral ambré d''exception, devenu une référence mondiale de la parfumerie contemporaine.'
 ),
 (
   'Portrait of a Lady',
@@ -465,6 +465,6 @@ VALUES
   ARRAY['Rose turque','Framboise'],
   ARRAY['Rose centifolia','Patchouli','Cannelle'],
   ARRAY['Musc','Santal','Encens'],
-  'Un bouquet de roses royales rehaussé de patchouli et d'épices — opulent et indémodable.'
+  'Un bouquet de roses royales rehaussé de patchouli et d''épices — opulent et indémodable.'
 )
 ON CONFLICT DO NOTHING;
