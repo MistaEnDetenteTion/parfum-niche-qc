@@ -27,7 +27,13 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  const { data: { session } } = await supabase.auth.getSession();
+  let session = null;
+  try {
+    const { data } = await supabase.auth.getSession();
+    session = data.session;
+  } catch (e) {
+    console.error("Proxy auth error:", e);
+  }
 
   // Protéger toutes les routes sous /admin
   if (request.nextUrl.pathname.startsWith("/admin")) {
