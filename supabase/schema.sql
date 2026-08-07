@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS public.grossistes (
 
 COMMENT ON TABLE public.grossistes IS 'Fournisseurs / grossistes de parfums';
 COMMENT ON COLUMN public.grossistes.taux_change_cad IS 'Taux de change actuel devise → CAD';
-COMMENT ON COLUMN public.grossistes.frais_livraison_fixe_cad IS 'Frais d'expédition en CAD par flacon commandé';
+COMMENT ON COLUMN public.grossistes.frais_livraison_fixe_cad IS 'Frais d''expédition en CAD par flacon commandé';
 
 -- ============================================================
 -- TABLE: parfums
