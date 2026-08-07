@@ -1,14 +1,20 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { type ComparateurItem } from "@/app/actions/catalogue";
+import { type ComparateurItem, type ComparateurBundle } from "@/app/actions/catalogue";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, TrendingDown, Package, AlertCircle } from "lucide-react";
+import { Search, TrendingDown, Package, AlertCircle, Layers } from "lucide-react";
 import { formatCAD } from "@/lib/utils";
 
-export function ComparateurClient({ initialData }: { initialData: ComparateurItem[] }) {
+export function ComparateurClient({ 
+  initialData, 
+  initialBundles 
+}: { 
+  initialData: ComparateurItem[];
+  initialBundles: ComparateurBundle[];
+}) {
   const [search, setSearch] = useState("");
 
   // Grouper les données par Parfum + Volume
@@ -19,6 +25,7 @@ export function ComparateurClient({ initialData }: { initialData: ComparateurIte
       maison: string;
       volume_flacon_ml: number;
       offres: ComparateurItem[];
+      bundles: ComparateurBundle[];
       meilleur_prix: number;
     }>();
 
@@ -38,6 +45,7 @@ export function ComparateurClient({ initialData }: { initialData: ComparateurIte
           maison: item.maison,
           volume_flacon_ml: item.volume_flacon_ml,
           offres: [],
+          bundles: [],
           meilleur_prix: Infinity,
         });
       }
@@ -49,12 +57,21 @@ export function ComparateurClient({ initialData }: { initialData: ComparateurIte
       }
     }
 
+    // Attach bundles that contain this perfume
+    for (const group of map.values()) {
+      for (const bundle of initialBundles) {
+        if (bundle.parfum_ids && bundle.parfum_ids.includes(group.parfum_id)) {
+          group.bundles.push(bundle);
+        }
+      }
+    }
+
     return Array.from(map.values()).sort((a, b) => {
       const cmp = a.maison.localeCompare(b.maison);
       if (cmp !== 0) return cmp;
       return a.parfum_nom.localeCompare(b.parfum_nom);
     });
-  }, [initialData, search]);
+  }, [initialData, initialBundles, search]);
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 animate-fadeInUp">
@@ -96,9 +113,11 @@ export function ComparateurClient({ initialData }: { initialData: ComparateurIte
                       <Package className="w-4 h-4" /> Format {group.volume_flacon_ml} ml
                     </p>
                   </div>
-                  <Badge variant="outline" className="border-gold/30 text-gold bg-gold/5">
-                    Meilleur prix : {formatCAD(group.meilleur_prix)} / ml
-                  </Badge>
+                  {group.meilleur_prix !== Infinity && (
+                    <Badge variant="outline" className="border-gold/30 text-gold bg-gold/5">
+                      Meilleur prix unitaire : {formatCAD(group.meilleur_prix)} / ml
+                    </Badge>
+                  )}
                 </div>
               </CardHeader>
               <CardContent className="p-0">
@@ -106,7 +125,7 @@ export function ComparateurClient({ initialData }: { initialData: ComparateurIte
                   <table className="w-full text-sm text-left">
                     <thead className="text-xs text-muted-foreground uppercase bg-muted/5">
                       <tr>
-                        <th className="px-6 py-3 font-medium">Grossiste</th>
+                        <th className="px-6 py-3 font-medium">Offre / Grossiste</th>
                         <th className="px-6 py-3 font-medium text-right">Prix d'Achat (Brut)</th>
                         <th className="px-6 py-3 font-medium text-right">Frais Estimés</th>
                         <th className="px-6 py-3 font-medium text-right">Coût de Revient / ml</th>
@@ -114,6 +133,7 @@ export function ComparateurClient({ initialData }: { initialData: ComparateurIte
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border/30">
+                      {/* Lignes pour les parfums à l'unité */}
                       {group.offres.sort((a,b) => a.cout_revient_cad_ml - b.cout_revient_cad_ml).map((offre, index) => {
                         const isBest = index === 0;
                         return (
@@ -121,9 +141,9 @@ export function ComparateurClient({ initialData }: { initialData: ComparateurIte
                             <td className="px-6 py-4">
                               <div className="font-medium flex items-center gap-2">
                                 {offre.grossiste_nom}
-                                {isBest && <Badge className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border-none text-[10px] py-0">TOP #1</Badge>}
+                                {isBest && <Badge className="bg-emerald-500/20 text-emerald-400 border-none text-[10px] py-0">TOP #1</Badge>}
                               </div>
-                              <div className="text-[10px] text-muted-foreground mt-0.5">Taux : {offre.taux_change_cad.toFixed(4)}</div>
+                              <div className="text-[10px] text-muted-foreground mt-0.5">À l'unité · Taux : {offre.taux_change_cad.toFixed(4)}</div>
                             </td>
                             <td className="px-6 py-4 text-right">
                               <span className="font-medium">{offre.prix_achat_devise.toFixed(2)} {offre.devise}</span>
@@ -147,6 +167,48 @@ export function ComparateurClient({ initialData }: { initialData: ComparateurIte
                                 {offre.notes && (
                                   <span className="text-[10px] text-muted-foreground flex items-start gap-1 max-w-[150px] leading-tight">
                                     <AlertCircle className="w-3 h-3 flex-shrink-0 mt-px" /> {offre.notes}
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      
+                      {/* Lignes pour les Bundles contenant ce parfum */}
+                      {group.bundles.map((bundle) => {
+                        return (
+                          <tr key={bundle.bundle_id} className="transition-colors hover:bg-muted/10 bg-blue-500/5">
+                            <td className="px-6 py-4">
+                              <div className="font-medium flex items-center gap-2">
+                                {bundle.grossiste_nom}
+                                <Badge className="bg-blue-500/20 text-blue-400 border-none text-[10px] py-0 gap-1 flex items-center">
+                                  <Layers className="w-3 h-3" /> PACK
+                                </Badge>
+                              </div>
+                              <div className="text-xs text-muted-foreground mt-1 font-medium">{bundle.bundle_nom}</div>
+                              <div className="text-[10px] text-muted-foreground mt-0.5 max-w-[200px] leading-tight">
+                                Contient: {bundle.items_details?.map(i => `${i.quantite}x ${i.parfum?.nom} (${i.volume_flacon_ml}ml)`).join(', ')}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              <span className="font-medium text-blue-400/90">{bundle.prix_global_devise.toFixed(2)} {bundle.devise}</span>
+                              <div className="text-xs text-muted-foreground mt-0.5">(Total: {formatCAD(bundle.prix_achat_total_cad)} CAD)</div>
+                            </td>
+                            <td className="px-6 py-4 text-right text-muted-foreground text-xs">
+                              +{formatCAD(bundle.frais_expedition_total_cad)} <br/> pour {bundle.total_flacons} flacons
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              <span className="font-semibold text-blue-400">
+                                {formatCAD(bundle.cout_moyen_cad_ml)}
+                              </span>
+                              <div className="text-[10px] text-muted-foreground mt-1">Moyenne au ml du pack</div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex flex-col gap-1">
+                                {bundle.notes && (
+                                  <span className="text-[10px] text-muted-foreground flex items-start gap-1 max-w-[150px] leading-tight">
+                                    <AlertCircle className="w-3 h-3 flex-shrink-0 mt-px" /> {bundle.notes}
                                   </span>
                                 )}
                               </div>
