@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌟 Parfum Niche QC — E-commerce & Back-office
 
-## Getting Started
+![Bannière du projet](https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=2000&auto=format&fit=crop)
 
-First, run the development server:
+**Parfum Niche QC** est une plateforme web sur-mesure (Full-Stack) conçue pour la gestion et la promotion d'un commerce de parfums de niche et de décants (10ml) au Québec. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Ce projet contient deux applications principales dans un seul monorepo :
+1. **Un Dashboard Administrateur sécurisé** pour gérer l'inventaire, les grossistes, et calculer automatiquement les prix de revient et les marges de profit.
+2. **Un Générateur de Story Instagram (Parfum du Jour)** pour créer instantanément des visuels marketing esthétiques au format 9:16.
+
+---
+
+## ✨ Fonctionnalités Principales
+
+### 👑 1. Centre de Commande (Admin Dashboard)
+- **Tableau de bord complet :** Vue d'ensemble des métriques clés (stock disponible, parfums actifs, lots en attente).
+- **Gestion des Grossistes :** Suivi des fournisseurs, des devises (USD, EUR, GBP), des taux de change et des frais de livraison.
+- **Gestion du Catalogue :** Création de fiches de parfums détaillées (maison, année, concentration, pyramide olfactive).
+- **Lots de Commande :** Saisie des commandes avec conversion automatique en CAD et répartition des frais de port au millilitre.
+- **Calculateur de Prix Temps Réel :** Simulateur avancé pour tester différentes marges et fixer le prix de vente parfait (décant 10ml et flacon entier).
+
+### 📱 2. Parfum du Jour (Générateur de Stories)
+- **Design Luxe et Minimaliste :** Esthétique très sombre (Dark Mode) avec accents dorés (`#c0a050`).
+- **Génération d'images :** Conversion du code HTML/CSS directement en image PNG (1080x1920) prête à être publiée sur les réseaux sociaux.
+- **Affichage des Notes Olfactives :** Intégration visuelle des notes de tête, cœur et fond.
+
+---
+
+## 🛠️ Stack Technique
+
+- **Framework :** [Next.js 14](https://nextjs.org/) (App Router)
+- **Langage :** [TypeScript](https://www.typescriptlang.org/) (Strict)
+- **Base de données & Auth :** [Supabase](https://supabase.com/) (PostgreSQL, RLS, Triggers SQL)
+- **Styling :** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Composants UI :** Shadcn UI / [Base UI](https://base-ui.com/)
+- **Génération d'images :** `html-to-image`
+- **Typographie :** Geist Font
+
+---
+
+## 🚀 Déploiement
+
+Le projet est conçu pour être déployé sur **Vercel** avec une base de données hébergée chez **Supabase**.
+
+### Variables d'environnement requises (`.env.local`)
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://votre-projet.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_votrecletreslongue...
+SUPABASE_SERVICE_ROLE_KEY=sb_secret_votrecletreslongue...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Schéma de Base de données
+La structure complète de la base de données (Tables, Enums, Triggers, RLS Policies et Fonctions de calcul) se trouve dans le fichier [`supabase/schema.sql`](./supabase/schema.sql). Il suffit de copier/coller ce code dans l'éditeur SQL de Supabase pour tout initialiser instantanément.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 💻 Installation en local
 
-## Learn More
+```bash
+# 1. Cloner le dépôt
+git clone https://github.com/MistaEnDetenteTion/parfum-niche-qc.git
 
-To learn more about Next.js, take a look at the following resources:
+# 2. Installer les dépendances
+cd parfum-niche-qc
+npm install
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 3. Configurer les variables d'environnement
+cp .env.local.example .env.local
+# (Puis remplissez vos clés Supabase dans .env.local)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 4. Lancer le serveur de développement
+npm run dev
+```
 
-## Deploy on Vercel
+L'application sera disponible sur [http://localhost:3000](http://localhost:3000).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Créé avec passion pour l'excellence de la parfumerie de niche au Québec.* ⚜️
