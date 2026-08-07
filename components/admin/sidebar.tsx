@@ -55,11 +55,13 @@ export function AdminSidebar() {
           <div className="w-9 h-9 rounded-lg bg-gold-muted border border-gold/20 flex items-center justify-center transition-all group-hover:border-gold/40">
             <FlaskConical className="w-5 h-5 text-gold" />
           </div>
-          <div>
-            <p className="text-sm font-semibold text-foreground leading-none">
-              Parfum Niche
-            </p>
-            <p className="text-xs text-muted-foreground mt-0.5">Centre de commande</p>
+          <div className="flex flex-col">
+            <span className="font-semibold text-foreground tracking-wide">
+              Parfums Ramzi
+            </span>
+            <span className="text-xs text-muted-foreground uppercase tracking-widest">
+              Centre de Commande
+            </span>
           </div>
         </Link>
       </div>
@@ -128,7 +130,7 @@ export function AdminMobileHeader() {
         <div className="w-8 h-8 rounded-lg bg-gold-muted border border-gold/20 flex items-center justify-center">
           <FlaskConical className="w-4 h-4 text-gold" />
         </div>
-        <span className="text-sm font-semibold">Parfum Niche</span>
+        <span className="text-sm font-semibold">Parfums Ramzi</span>
       </Link>
 
       <div className="flex items-center gap-1 text-sm text-muted-foreground">

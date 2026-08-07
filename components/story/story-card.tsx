@@ -100,7 +100,7 @@ export function StoryCard({ parfum, avis, prix, dateStr }: StoryCardProps) {
                 margin: 0,
               }}
             >
-              Parfum Niche QC
+              Parfums Ramzi
             </p>
             <p
               style={{
@@ -475,7 +475,7 @@ export function StoryCard({ parfum, avis, prix, dateStr }: StoryCardProps) {
               margin: 0,
             }}
           >
-            Parfum Niche QC · Québec
+            Parfums Ramzi
           </p>
           <div
             style={{

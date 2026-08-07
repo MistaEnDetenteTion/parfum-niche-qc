@@ -16,14 +16,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Parfum Niche QC — Décants & Parfums de Niche",
-    template: "%s | Parfum Niche QC",
+    default: "Parfums Ramzi — Décants & Parfums de Niche",
+    template: "%s | Parfums Ramzi",
   },
   description:
     "Commerce de parfums de niche et de décants 10 ml basé au Québec, Canada. Découvrez des fragrances rares et exclusives.",
   keywords: ["parfum niche", "décants", "Québec", "parfumerie", "fragrances"],
   openGraph: {
-    title: "Parfum Niche QC",
+    title: "Parfums Ramzi",
     description: "Décants et parfums de niche au Québec",
     locale: "fr_CA",
     type: "website",

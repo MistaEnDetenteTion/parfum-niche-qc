@@ -23,8 +23,8 @@ export default function HomePage() {
         </p>
 
         <h1 className="text-5xl font-light tracking-tight mb-4 text-foreground">
-          Parfum{" "}
-          <span className="text-gradient-gold font-normal">Niche QC</span>
+          Parfum <br className="hidden sm:block" />
+          <span className="text-gradient-gold font-normal">Ramzi</span>
         </h1>
 
         <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
