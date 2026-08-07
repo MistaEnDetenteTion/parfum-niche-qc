@@ -22,17 +22,22 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
-      setError(error.message);
+      if (error) {
+        setError(error.message);
+        setLoading(false);
+      } else {
+        router.push("/admin");
+        router.refresh();
+      }
+    } catch (err: any) {
+      setError(err?.message || "Erreur réseau ou URL invalide");
       setLoading(false);
-    } else {
-      router.push("/admin");
-      router.refresh();
     }
   };
 
