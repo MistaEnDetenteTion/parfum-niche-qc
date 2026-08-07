@@ -50,9 +50,9 @@ function GrossisteForm({
   const [form, setForm] = useState<GrossisteFormData>({
     nom: initial?.nom ?? "",
     site_web: initial?.site_web ?? "",
-    pays: initial?.pays ?? "États-Unis",
-    devise: (initial?.devise as Devise) ?? "USD",
-    taux_change_cad: initial?.taux_change_cad ?? 1.365,
+    pays: initial?.pays ?? "France",
+    devise: (initial?.devise as Devise) ?? "EUR",
+    taux_change_cad: initial?.taux_change_cad ?? 1.48,
     frais_livraison_fixe_cad: initial?.frais_livraison_fixe_cad ?? 12.75,
     notes: initial?.notes ?? "",
     actif: initial?.actif ?? true,

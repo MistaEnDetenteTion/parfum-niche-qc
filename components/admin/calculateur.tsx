@@ -89,8 +89,8 @@ function StatBox({
 export function Calculateur() {
   const [state, setState] = useState<CalcState>({
     prixAchatDevise: 120,
-    devise: "USD",
-    tauxChange: 1.365,
+    devise: "EUR",
+    tauxChange: 1.48,
     volumeFlaconMl: 100,
     quantiteFlacons: 1,
     fraisLivraisonCad: 12.75,
