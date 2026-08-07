@@ -35,6 +35,7 @@ import {
   XCircle,
   Clock,
   Info,
+  Trash2,
 } from "lucide-react";
 import { formatCAD, STATUT_LOT_CONFIG } from "@/lib/utils";
 
@@ -382,6 +383,7 @@ function LotCard({
   onStatutChange,
   onAddLigne,
   onSaveDecant,
+  onDelete,
 }: {
   lot: LotCommandeAvecDetails;
   onStatutChange: (id: string, s: StatutLot, date?: string) => Promise<void>;
@@ -400,6 +402,7 @@ function LotCard({
     multiplicateur_flacon_entier: number;
     prix_boutique_barre_cad?: number;
   }) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [ligneOpen, setLigneOpen] = useState(false);
@@ -443,6 +446,18 @@ function LotCard({
                 <CheckCircle className="w-3 h-3 mr-1" /> Reçu
               </Button>
             )}
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-7 w-7 text-muted-foreground hover:text-red-400 hover:bg-red-400/10"
+              onClick={() => {
+                if (confirm("Supprimer ce lot de commande définitivement ?")) {
+                  onDelete(lot.id);
+                }
+              }}
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
             <Button
               size="icon"
               variant="ghost"
@@ -567,7 +582,7 @@ function LotCard({
 
 /* ——— Manager principal ——— */
 export function CommandesManager() {
-  const { commandes, loading, addLot, updateLotStatut, addLotParfum, upsertParametresDecant } = useCommandes();
+  const { commandes, loading, addLot, updateLotStatut, addLotParfum, upsertParametresDecant, deleteLot } = useCommandes();
   const [open, setOpen] = useState(false);
   const [filtre, setFiltre] = useState<StatutLot | "tous">("tous");
 
@@ -640,6 +655,7 @@ export function CommandesManager() {
               onStatutChange={updateLotStatut}
               onAddLigne={addLotParfum}
               onSaveDecant={upsertParametresDecant}
+              onDelete={deleteLot}
             />
           ))}
         </div>

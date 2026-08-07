@@ -109,3 +109,14 @@ export async function getClientsARelancer() {
   if (error) throw new Error(error.message);
   return data; // any for simplicity in this specific action
 }
+
+// 6. Supprimer un client (cascade sur les ventes)
+export async function deleteClient(id: string) {
+  const supabase = await createServerSupabaseClient();
+  const { error } = await (supabase as any)
+    .from("clients")
+    .delete()
+    .eq("id", id);
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/crm");
+}

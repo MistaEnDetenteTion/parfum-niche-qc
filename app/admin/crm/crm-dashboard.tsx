@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { type ClientCRM, upsertClient } from "@/app/actions/crm";
+import { type ClientCRM, upsertClient, deleteClient } from "@/app/actions/crm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, Crown, Gift, Plus, MessageCircle, Copy } from "lucide-react";
+import { Users, Crown, Gift, Plus, MessageCircle, Copy, Trash2 } from "lucide-react";
 import { formatCAD } from "@/lib/utils";
 import { ClientModal } from "./client-modal";
 
@@ -98,9 +98,22 @@ export function CrmDashboard({
                           )}
                         </td>
                         <td className="px-4 py-3">
-                          <Button size="sm" variant="ghost" className="h-8 text-xs text-gold hover:text-gold/80 hover:bg-gold/10" onClick={() => handleOpenClient(c)}>
-                            Gérer
-                          </Button>
+                          <div className="flex items-center gap-1">
+                            <Button size="sm" variant="ghost" className="h-8 text-xs text-gold hover:text-gold/80 hover:bg-gold/10" onClick={() => handleOpenClient(c)}>
+                              Gérer
+                            </Button>
+                            <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground hover:text-red-400 hover:bg-red-400/10" onClick={async () => {
+                              if (confirm("Supprimer ce client et toutes ses ventes définitivement ?")) {
+                                try {
+                                  await deleteClient(c.id);
+                                } catch (e: any) {
+                                  alert("Erreur: " + e.message);
+                                }
+                              }
+                            }}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     ))}

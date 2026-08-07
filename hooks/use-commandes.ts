@@ -88,5 +88,11 @@ export function useCommandes() {
     await fetchCommandes();
   };
 
-  return { commandes, loading, error, refresh: fetchCommandes, addLot, updateLotStatut, addLotParfum, upsertParametresDecant };
+  const deleteLot = async (id: string) => {
+    const { error } = await db.from("lots_commande").delete().eq("id", id);
+    if (error) throw error;
+    await fetchCommandes();
+  };
+
+  return { commandes, loading, error, refresh: fetchCommandes, addLot, updateLotStatut, addLotParfum, upsertParametresDecant, deleteLot };
 }
