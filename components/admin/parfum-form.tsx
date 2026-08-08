@@ -84,7 +84,7 @@ function ParfumForm({
     notes_fond_raw: initial?.notes_fond?.join(", ") ?? "",
     description: initial?.description ?? "",
     actif: initial?.actif ?? true,
-    prix_boutique_formats: (initial?.prix_boutique_formats as PrixFormat[]) ?? [],
+    prix_boutique_formats: (initial?.prix_boutique_formats as unknown as PrixFormat[]) ?? [],
   });
 
   const set = <K extends keyof ParfumFormData>(k: K, v: ParfumFormData[K]) =>
@@ -319,7 +319,7 @@ export function ParfumsManager() {
       notes_fond: data.notes_fond_raw.split(",").map((n) => n.trim()).filter(Boolean),
       description: data.description || null,
       actif: data.actif,
-      prix_boutique_formats: data.prix_boutique_formats,
+      prix_boutique_formats: data.prix_boutique_formats as unknown as any,
       slug: slugify(`${data.maison}-${data.nom}`),
     };
     if (editing) {
