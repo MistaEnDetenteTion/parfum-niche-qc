@@ -230,7 +230,7 @@ export function GrossisteCatalogueModal({
                   <Label>Parfum *</Label>
                   <Select value={parfumId} onValueChange={(v) => setParfumId(v as string)}>
                     <SelectTrigger className="bg-muted/30"><SelectValue placeholder="Sélectionner le parfum" /></SelectTrigger>
-                    <SelectContent>
+                    <SelectContent alignItemWithTrigger={false} className="min-w-[300px] sm:min-w-[450px] max-h-[400px]">
                       {parfums.map((p) => (
                         <SelectItem key={p.id} value={p.id}>{p.maison} - {p.nom}</SelectItem>
                       ))}
@@ -318,7 +318,7 @@ export function GrossisteCatalogueModal({
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <Select value={itemParfumId} onValueChange={(v) => setItemParfumId(v as string)}>
                               <SelectTrigger className="h-8 text-xs bg-muted/50"><SelectValue placeholder="Parfum" /></SelectTrigger>
-                              <SelectContent>
+                              <SelectContent alignItemWithTrigger={false} className="min-w-[300px] sm:min-w-[450px] max-h-[400px]">
                                 {parfums.map((p) => (
                                   <SelectItem key={p.id} value={p.id}>{p.maison} - {p.nom}</SelectItem>
                                 ))}
