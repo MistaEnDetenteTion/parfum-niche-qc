@@ -59,7 +59,6 @@ export interface ParfumFormData {
   notes_coeur_raw: string;
   notes_fond_raw: string;
   description: string;
-  description: string;
   actif: boolean;
   prix_boutique_formats: PrixFormat[];
 }

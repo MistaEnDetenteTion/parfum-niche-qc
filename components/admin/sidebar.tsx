@@ -13,7 +13,6 @@ import {
   Calculator,
   Sparkles,
   Home,
-  Home,
   ChevronRight,
   TrendingUp,
   Menu,
