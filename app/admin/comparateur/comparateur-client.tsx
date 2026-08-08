@@ -129,6 +129,7 @@ export function ComparateurClient({
                         <th className="px-6 py-3 font-medium text-right">Prix d'Achat (Brut)</th>
                         <th className="px-6 py-3 font-medium text-right">Frais Estimés</th>
                         <th className="px-6 py-3 font-medium text-right">Coût de Revient / ml</th>
+                        <th className="px-6 py-3 font-medium text-right">Marge vs Prix Boutique</th>
                         <th className="px-6 py-3 font-medium">Infos / MOQ</th>
                       </tr>
                     </thead>
@@ -156,6 +157,34 @@ export function ComparateurClient({
                               <span className={`font-semibold ${isBest ? 'text-emerald-400' : 'text-foreground'}`}>
                                 {formatCAD(offre.cout_revient_cad_ml)}
                               </span>
+                            </td>
+                            <td className="px-6 py-4 text-right">
+                              {(() => {
+                                // Find retail price for this exact volume
+                                const formats = (offre.prix_boutique_formats || []) as any[];
+                                const exactFormat = formats.find(f => f.volume === group.volume_flacon_ml);
+                                // If not found, use closest or default
+                                const formatToUse = exactFormat || formats[0];
+                                
+                                if (!formatToUse || !formatToUse.cad) return <span className="text-muted-foreground text-xs italic">Non défini</span>;
+                                
+                                const prixBoutiqueCad = formatToUse.cad;
+                                // We are comparing the full bottle price
+                                const coutRevientFlacon = offre.cout_revient_cad_ml * group.volume_flacon_ml;
+                                // Convert to the same volume ratio if the retail price is for a different volume (fallback)
+                                const ratio = group.volume_flacon_ml / formatToUse.volume;
+                                const adjustedRetailCad = prixBoutiqueCad * ratio;
+                                
+                                const margin = adjustedRetailCad - coutRevientFlacon;
+                                const marginPct = (margin / adjustedRetailCad) * 100;
+                                
+                                return (
+                                  <div className="flex flex-col items-end">
+                                    <span className="font-medium text-emerald-400">+{marginPct.toFixed(1)}%</span>
+                                    <span className="text-[10px] text-muted-foreground mt-0.5">MSRP: {formatCAD(adjustedRetailCad)}</span>
+                                  </div>
+                                );
+                              })()}
                             </td>
                             <td className="px-6 py-4">
                               <div className="flex flex-col gap-1">

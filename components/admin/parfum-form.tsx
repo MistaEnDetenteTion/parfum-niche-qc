@@ -43,7 +43,13 @@ const CONCENTRATIONS: Concentration[] = [
 
 const GENRES: Genre[] = ["Masculin", "Féminin", "Mixte"];
 
-interface ParfumFormData {
+export interface PrixFormat {
+  volume: number;
+  eur: number;
+  cad: number;
+}
+
+export interface ParfumFormData {
   nom: string;
   maison: string;
   annee: string;
@@ -53,7 +59,9 @@ interface ParfumFormData {
   notes_coeur_raw: string;
   notes_fond_raw: string;
   description: string;
+  description: string;
   actif: boolean;
+  prix_boutique_formats: PrixFormat[];
 }
 
 function ParfumForm({
@@ -77,10 +85,34 @@ function ParfumForm({
     notes_fond_raw: initial?.notes_fond?.join(", ") ?? "",
     description: initial?.description ?? "",
     actif: initial?.actif ?? true,
+    prix_boutique_formats: (initial?.prix_boutique_formats as PrixFormat[]) ?? [],
   });
 
   const set = <K extends keyof ParfumFormData>(k: K, v: ParfumFormData[K]) =>
     setForm((prev) => ({ ...prev, [k]: v }));
+
+  const addFormat = () => {
+    setForm((prev) => ({
+      ...prev,
+      prix_boutique_formats: [...prev.prix_boutique_formats, { volume: 100, eur: 0, cad: 0 }],
+    }));
+  };
+
+  const updateFormat = (index: number, field: keyof PrixFormat, value: number) => {
+    setForm((prev) => {
+      const newFormats = [...prev.prix_boutique_formats];
+      newFormats[index] = { ...newFormats[index], [field]: value };
+      return { ...prev, prix_boutique_formats: newFormats };
+    });
+  };
+
+  const removeFormat = (index: number) => {
+    setForm((prev) => {
+      const newFormats = [...prev.prix_boutique_formats];
+      newFormats.splice(index, 1);
+      return { ...prev, prix_boutique_formats: newFormats };
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -194,7 +226,46 @@ function ParfumForm({
           </div>
         </div>
 
-        <div className="col-span-2 space-y-1.5">
+        {/* Prix Boutique par Format */}
+        <div className="col-span-2 space-y-2 mt-2">
+          <div className="flex items-center justify-between">
+            <Label>Prix Boutique (Revente officielle)</Label>
+            <Button type="button" variant="outline" size="sm" onClick={addFormat} className="h-7 text-xs flex items-center gap-1">
+              <Plus className="w-3 h-3" /> Ajouter un format
+            </Button>
+          </div>
+          {form.prix_boutique_formats.length === 0 ? (
+            <div className="text-xs text-muted-foreground italic border border-dashed border-border/50 rounded-lg p-4 text-center">
+              Aucun prix boutique défini.
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {form.prix_boutique_formats.map((fmt, i) => (
+                <div key={i} className="flex items-center gap-2 bg-muted/10 p-2 rounded-lg border border-border/30">
+                  <div className="flex-1 grid grid-cols-3 gap-2">
+                    <div className="space-y-1">
+                      <Label className="text-[10px] text-muted-foreground">Volume (ml)</Label>
+                      <Input type="number" value={fmt.volume} onChange={(e) => updateFormat(i, "volume", Number(e.target.value))} className="h-7 text-xs bg-muted/30" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] text-muted-foreground">Prix EUR (€)</Label>
+                      <Input type="number" value={fmt.eur} onChange={(e) => updateFormat(i, "eur", Number(e.target.value))} className="h-7 text-xs bg-muted/30" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-[10px] text-muted-foreground">Prix CAD ($)</Label>
+                      <Input type="number" value={fmt.cad} onChange={(e) => updateFormat(i, "cad", Number(e.target.value))} className="h-7 text-xs bg-muted/30" />
+                    </div>
+                  </div>
+                  <Button type="button" variant="ghost" size="icon" onClick={() => removeFormat(i)} className="h-7 w-7 text-destructive hover:bg-destructive/10 shrink-0 mt-4">
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="col-span-2 space-y-1.5 mt-2">
           <Label htmlFor="desc">Description</Label>
           <Textarea
             id="desc"
@@ -249,6 +320,7 @@ export function ParfumsManager() {
       notes_fond: data.notes_fond_raw.split(",").map((n) => n.trim()).filter(Boolean),
       description: data.description || null,
       actif: data.actif,
+      prix_boutique_formats: data.prix_boutique_formats,
       slug: slugify(`${data.maison}-${data.nom}`),
     };
     if (editing) {

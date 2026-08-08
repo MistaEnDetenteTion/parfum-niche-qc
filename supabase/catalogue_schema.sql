@@ -37,6 +37,7 @@ SELECT
     p.id AS parfum_id,
     p.nom AS parfum_nom,
     p.maison,
+    p.prix_boutique_formats,
     gc.volume_flacon_ml,
     g.id AS grossiste_id,
     g.nom AS grossiste_nom,

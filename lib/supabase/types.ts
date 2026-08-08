@@ -67,6 +67,7 @@ export type Database = {
           notes_fond: string[];
           description: string | null;
           image_url: string | null;
+          prix_boutique_formats: Json;
           slug: string | null;
           actif: boolean;
           created_at: string;
@@ -89,6 +90,7 @@ export type Database = {
           notes_fond?: string[];
           description?: string | null;
           image_url?: string | null;
+          prix_boutique_formats?: Json;
           slug?: string | null;
           actif?: boolean;
         };
@@ -109,6 +111,7 @@ export type Database = {
           notes_fond?: string[];
           description?: string | null;
           image_url?: string | null;
+          prix_boutique_formats?: Json;
           slug?: string | null;
           actif?: boolean;
         };

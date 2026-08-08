@@ -22,6 +22,7 @@ export type ComparateurItem = {
   parfum_id: string;
   parfum_nom: string;
   maison: string;
+  prix_boutique_formats: any;
   volume_flacon_ml: number;
   grossiste_id: string;
   grossiste_nom: string;

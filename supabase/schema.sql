@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS public.parfums (
   notes_fond      TEXT[] NOT NULL DEFAULT '{}',
   description     TEXT,
   image_url       TEXT,
+  prix_boutique_formats JSONB DEFAULT '[]'::jsonb,
   slug            TEXT UNIQUE,
   actif           BOOLEAN NOT NULL DEFAULT TRUE,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
