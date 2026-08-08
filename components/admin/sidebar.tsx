@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -11,8 +13,11 @@ import {
   Calculator,
   Sparkles,
   Home,
+  Home,
   ChevronRight,
   TrendingUp,
+  Menu,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -126,27 +131,111 @@ export function AdminSidebar() {
 /* ——— Mobile Header ——— */
 export function AdminMobileHeader() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+
   const currentItem = navItems.find((item) =>
     item.exact ? pathname === item.href : pathname.startsWith(item.href)
   );
 
   return (
-    <header className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-border/50 bg-sidebar">
-      <Link href="/" className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-lg bg-gold-muted border border-gold/20 flex items-center justify-center">
-          <FlaskConical className="w-4 h-4 text-gold" />
+    <>
+      <header className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-border/50 bg-sidebar sticky top-0 z-40">
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => setIsOpen(true)}
+            className="p-1.5 -ml-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gold-muted border border-gold/20 flex items-center justify-center">
+              <FlaskConical className="w-4 h-4 text-gold" />
+            </div>
+            <span className="text-sm font-semibold">Parfums Ramzi</span>
+          </Link>
         </div>
-        <span className="text-sm font-semibold">Parfums Ramzi</span>
-      </Link>
 
-      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-        {currentItem && (
-          <>
-            <currentItem.icon className="w-4 h-4" />
-            <span className="hidden sm:inline">{currentItem.label}</span>
-          </>
-        )}
-      </div>
-    </header>
+        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+          {currentItem && (
+            <>
+              <currentItem.icon className="w-4 h-4" />
+              <span className="hidden sm:inline">{currentItem.label}</span>
+            </>
+          )}
+        </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden flex">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+            onClick={() => setIsOpen(false)}
+          />
+          
+          {/* Sidebar */}
+          <div className="relative w-72 max-w-[80vw] h-full bg-sidebar border-r border-border/50 flex flex-col shadow-2xl animate-in slide-in-from-left">
+            <div className="flex items-center justify-between p-4 border-b border-border/50">
+              <span className="font-semibold text-foreground tracking-wide">Menu</span>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-white/5 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+              {navItems.map((item) => {
+                const isActive = item.exact
+                  ? pathname === item.href
+                  : pathname.startsWith(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-3 rounded-lg text-sm transition-all duration-200 group",
+                      isActive
+                        ? "bg-gold-muted text-gold border border-gold/20"
+                        : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                    )}
+                  >
+                    <item.icon
+                      className={cn(
+                        "w-5 h-5 flex-shrink-0 transition-colors",
+                        isActive ? "text-gold" : "text-muted-foreground group-hover:text-foreground"
+                      )}
+                    />
+                    <span className="flex-1">{item.label}</span>
+                  </Link>
+                );
+              })}
+              
+              <div className="pt-4 mt-4 border-t border-border/50 space-y-1">
+                <Link
+                  href="/admin/comparateur"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all"
+                >
+                  <TrendingUp className="w-5 h-5" />
+                  <span>Comparateur Fournisseurs</span>
+                </Link>
+                <Link
+                  href="/"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-white/5 transition-all"
+                >
+                  <Home className="w-5 h-5" />
+                  <span>Accueil Public</span>
+                </Link>
+              </div>
+            </nav>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
